@@ -4,31 +4,28 @@ import pandas as pd
 import requests
 from bs4 import BeautifulSoup
 
-page = requests.get("https://cadem.org/state-senate/")
-soup = BeautifulSoup(page.content, 'html.parser')
+# page = requests.get("https://cadem.org/state-senate/")
+# soup = BeautifulSoup(page.content, 'html.parser')
 
-myDivs = soup.find_all("div", {"class" : "apollo-candidate-socialicon apollo-candidate-socialtwitter"})
+# myDivs = soup.find_all("div", {"class" : "apollo-candidate-socialicon apollo-candidate-socialtwitter"})
 
-link = []
+# link = []
 
-#getting all the twitter account links of the candidates
-for links in myDivs:
-    for all_link in links.find_all('a', href=True):
-        link.append(all_link['href'])
+# #getting all the twitter account links of the candidates
+# for links in myDivs:
+#     for all_link in links.find_all('a', href=True):
+#         link.append(all_link['href'])
 
-twID = []
+# twID = []
 
-#getting twitter id
-for usr in link:
-    result = usr.split('/')[3]
-    result = result.split('?')
-    twID.append(result[0])
+# #getting twitter id
+# for usr in link:
+#     result = usr.split('/')[3]
+#     result = result.split('?')
+#     twID.append(result[0])
 
-twID.remove('davecortese2020')
-twID.remove('@roth4senate')
-
-
-
+# twID.remove('davecortese2020')
+# twID.remove('@roth4senate')
 
 
 consumer_key = 'Wc46qw5CVy9JQ2DOzgIlYkKlG'
@@ -41,52 +38,24 @@ auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_token_secret)
 api = tweepy.API(auth)
 
-for usrId in twID:
-    userID = usrId
+userID = 'elonmusk'
+keywords = '2022'
 
-    tweets = api.user_timeline(screen_name=userID, 
-                            # 200 is the maximum allowed count
-                            count=200,
-                            include_rts = False,
-                            # Necessary to keep full_text 
-                            # otherwise only the first 140 words are extracted
-                            tweet_mode = 'extended'
-                            )
+tweets = tweepy.Cursor(api.search_tweets, q=keywords, lang='en',
+        count=200, tweet_mode='extended').items(300)
 
-    for info in tweets[:3]:
-        print("ID: {}".format(info.id))
-        print(info.created_at)
-        print(info.full_text.encode('utf-8'))
-        print("\n")
+all_tweets = []
 
-    all_tweets = []
-    all_tweets.extend(tweets)
-    oldest_id = tweets[-1].id
-    while True:
-        tweets = api.user_timeline(screen_name=userID, 
-                            # 200 is the maximum allowed count
-                            count=200,
-                            include_rts = False,
-                            max_id = oldest_id - 1,
-                            # Necessary to keep full_text 
-                            # otherwise only the first 140 words are extracted
-                            tweet_mode = 'extended'
-                            )
-        if len(tweets) == 0:
-            break
-        oldest_id = tweets[-1].id
-        all_tweets.extend(tweets)
-        print('N of tweets downloaded till now {}'.format(len(all_tweets)))
+for tw in tweets:
+    all_tweets.append(tw)
 
-    
-    outtweets = [[tweet.id_str, 
-                tweet.created_at, 
-                tweet.favorite_count, 
-                tweet.retweet_count, 
-                tweet.full_text.encode("utf-8").decode("utf-8")] 
-                for idx,tweet in enumerate(all_tweets)]
-    df = pd.DataFrame(outtweets,columns=["id","created_at","favorite_count", "retweet_count", "text"])
-    df.to_csv('tweets/%s_tweets.csv' % userID,index=False)
-    df.head(3)
+outtweets = [[tweet.id_str, 
+            tweet.created_at, 
+            tweet.favorite_count, 
+            tweet.retweet_count, 
+            tweet.full_text.encode("utf-8").decode("utf-8")] 
+            for idx,tweet in enumerate(all_tweets)]
+df = pd.DataFrame(outtweets,columns=["id","created_at","favorite_count", "retweet_count", "text"])
+df.to_csv('tweets/%s_tweets.csv' % keywords,index=False)
+df.head(3)
 
-    
