@@ -35,7 +35,7 @@ from urllib.request import Request, urlopen
 # twID.remove('@roth4senate')
 
 
-consumer_key = 'Wc46qw5CVy9JQ2DOzgIlYkKlG'
+consumer_key = 'm389H6eHutIecF7SZjEu1zcjR'
 consumer_secret = 'sNTQZl18KGowmHDHFJqPgJoq8M3SVtGe8RY1UY6ztr9yl8lNAs'
 access_token = '1584651535933267968-Iq8u3WDEFTGV4IVzoETufQGDGPnwh0'
 access_token_secret = 'wHqPJ0eLir3OjopC2MPey7S6cKOLux2Z4TYMfZCdu9K6z'
