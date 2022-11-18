@@ -7,9 +7,9 @@ from urllib.request import Request, urlopen
 
 
 consumer_key = 'm389H6eHutIecF7SZjEu1zcjR'
-consumer_secret = 'sNTQZl18KGowmHDHFJqPgJoq8M3SVtGe8RY1UY6ztr9yl8lNAs'
-access_token = '1584651535933267968-Iq8u3WDEFTGV4IVzoETufQGDGPnwh0'
-access_token_secret = 'wHqPJ0eLir3OjopC2MPey7S6cKOLux2Z4TYMfZCdu9K6z'
+consumer_secret = 'JHBSxNkU2hJ7XtmsEGVx3mDkqRdA4UWoW0dIuMR6wcQDyFWVQH'
+access_token = '1577073065489375232-3VpNmkvD4XHelaw8MEgefPRAOjoEz9'
+access_token_secret = '9ZlMUDbKm3xQzj9ZaArReNyUQRsj2yJpNuZ2x4IWGj9jV'
 
 auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_token_secret)
